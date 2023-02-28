@@ -67,7 +67,7 @@ public class VehicleAdvertisementController {
         );
     }
 
-    @PutMapping("listing/{listingId}/publish")
+    @PutMapping("{listingId}/publish")
 	public ResponseEntity<JsonResponse> publishListing(@PathVariable("listingId") Long id,@RequestBody @Valid ListingPublishRequest request)  {
 		Listing listing = vehicleAdvertisementService.publishListing(id, request);
         return ResponseEntity.ok(
@@ -80,7 +80,7 @@ public class VehicleAdvertisementController {
         );
     }
     
-	@PutMapping("listing/{listingId}/unpublish")
+	@PutMapping("{listingId}/unpublish")
 	public ResponseEntity<JsonResponse> unpublishListing(@PathVariable("listingId") Long id)  {
 		Listing listing = vehicleAdvertisementService.unpublishListing(id);
         return ResponseEntity.ok(

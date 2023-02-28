@@ -85,9 +85,9 @@ public class VehicleAdvertisementService {
 	}
 
 	public Listing publishListing(Long id, ListingPublishRequest request) {
-		Listing listing = listingRepository.findById(request.getId()).orElse(null);
+		Listing listing = listingRepository.findById(id).orElse(null);
 		if(listing == null) {
-			throw new NotFoundException(request.getId());
+			throw new NotFoundException(id);
 		}
 		if(listing.getDealer() == null) {
 			throw new NotFoundException();

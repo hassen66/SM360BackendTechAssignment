@@ -12,7 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ListingPublishRequest {
 	@NotNull
-	private Long id;
-	@NotNull
 	private boolean showErrorLimitIsReached;
 }
