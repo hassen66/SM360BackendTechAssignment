@@ -45,7 +45,8 @@ public class VehicleAdvertisementService {
     }
 
     public List<ListingGetResponse> getListing(Long dealerId, ListingState state) {
-        var response = listingRepository.findAll().stream().filter(item-> dealerId.equals(item.getDealer().getId()) && state.equals(item.getState())).collect(Collectors.toList());
+        Dealer dealer = dealerRepository.findById(dealerId).orElse(null);
+        var response = listingRepository.findByDealerAndState(dealer, state);
         return modelMapper.map(response, new TypeToken<List<ListingGetResponse>>() {}.getType());
     }
 
@@ -93,22 +94,14 @@ public class VehicleAdvertisementService {
 			throw new NotFoundException();
 		}
 		
-		Dealer dealer = dealerRepository.findById(listing.getDealer().getId()).orElse(null);
-		if(dealer == null) {
-			throw new NotFoundException(listing.getDealer().getId());
-		}
-		
-        long dealerId = listing.getDealer().getId();
-		long total = listingRepository.findAll().stream().filter(item-> dealerId == item.getDealer().getId() && ListingState.published.equals(item.getState()) && !id.equals(item.getId())).count();
+		Dealer dealer = listing.getDealer();
+		long total = listingRepository.countByDealerAndState(dealer,ListingState.published);
 		
 		if(total >= dealer.getTierLimit()) {
 			if(request.isShowErrorLimitIsReached()) {
 				throw new TierLimitException(dealer.getTierLimit());
 			} else {
-				Listing lastListing = listingRepository.findAll().stream().filter(item-> dealerId == item.getDealer().getId() && ListingState.published.equals(item.getState()) && item.getPublishedAt() != null)
-				.sorted(Comparator.comparing(Listing::getPublishedAt).reversed())
-				.findFirst()
-                .orElseThrow();
+                Listing lastListing = listingRepository.findFirstByDealerAndStateAndPublishedAtIsNotNullOrderByPublishedAtDesc(listing.getDealer(),ListingState.published);
 				lastListing.setState(ListingState.draft);
 				listingRepository.save(lastListing);
 			}

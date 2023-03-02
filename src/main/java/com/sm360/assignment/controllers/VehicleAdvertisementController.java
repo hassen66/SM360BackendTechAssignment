@@ -46,7 +46,7 @@ public class VehicleAdvertisementController {
     @PostMapping
 	public ResponseEntity<JsonResponse> createListing(@RequestBody @Valid ListingCreateRequest request)  {
 		ListingCreateResponse response = vehicleAdvertisementService.createListing(request);
-        return ResponseEntity.ok(
+        return ResponseEntity.status(HttpStatus.CREATED).body(
             JsonResponse.builder().data(response)
             .status(HttpStatus.CREATED.getReasonPhrase())
             .statusCode(HttpStatus.CREATED.value())
