@@ -8,6 +8,10 @@ SM360 Backend Tech Assignment REST API based on Java Spring, Spring Boot, Spring
   ./mvnw spring-boot:run
 ```
 
+## Documentation
+
+[Documentation](http://localhost:8080/api-docs)
+
 ## REST API Endpoints
 
 All inputs and outputs use JSON format.
