@@ -22,7 +22,7 @@ All inputs and outputs use JSON format.
   GET / - Get all listings of a dealer with a given state
   POST / - Create a listing
   PUT /{id} - Update a listing
-  PUT /{id} - Publish a listing
-  PUT /{id} - Unpublish a listing
+  PUT /{id}/publish - Publish a listing
+  PUT /{id}/unpublish - Unpublish a listing
 
 ```
